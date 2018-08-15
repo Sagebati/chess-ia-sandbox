@@ -1,7 +1,7 @@
 <template>
   <div id="chessboard">
     <link rel="stylesheet" href="vue-chessboard/dist/vue-chessboard.css">
-    <chessboard></chessboard>
+    <chessboard @onMove="onMove"></chessboard>
   </div>
 </template>
 
@@ -13,6 +13,11 @@ export default {
   name: 'Board',
   components: {
     chessboard: chessboard
+  },
+  methods: {
+    onMove: function (data) {
+      this.$emit('on-move', data)
+    }
   }
 }
 </script>

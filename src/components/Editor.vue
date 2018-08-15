@@ -1,7 +1,5 @@
 <template>
-      <div class="codemirror">
-        <codemirror v-model="code" :options="options"></codemirror>
-      </div>
+  <codemirror v-model="code" :options="options"></codemirror>
 </template>
 
 <script>
@@ -13,7 +11,7 @@ export default {
   data () {
     return {
       code:
-        `import someResource from 'codemirror/some-resource'
+          `import someResource from 'codemirror/some-resource'
 export default {
   data () {
     // 这是一个包含、代码提示、折叠、选中、sublime模式...的编辑器
@@ -57,6 +55,12 @@ export default {
   .CodeMirror-focused .cm-matchhighlight {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==) repeat-x bottom;
   }
-  .cm-matchhighlight {background-color: lightgreen}
-  .CodeMirror-selection-highlight-scrollbar {background-color: green}
+
+  .cm-matchhighlight {
+    background-color: lightgreen
+  }
+
+  .CodeMirror-selection-highlight-scrollbar {
+    background-color: green
+  }
 </style>
