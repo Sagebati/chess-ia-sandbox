@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "chess.js": "^0.10.2",
+    "chessground": "^7.3.2",
     "codemirror": "^5.39.2",
     "vue": "^2.5.2",
+    "vue-chessboard": "^0.6.3",
     "vue-codemirror": "^4.0.5",
     "vue-router": "^3.0.1"
   },
