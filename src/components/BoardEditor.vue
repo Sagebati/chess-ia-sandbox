@@ -7,6 +7,9 @@
         do is return a correct chess move in san notation like "A4".
       </p>
     </div>
+    <div>
+      <engineSelector></engineSelector>
+    </div>
     <div id="board">
       <chessboard :fen="currentfen" @onMove="onMove"></chessboard>
     </div>
@@ -24,12 +27,15 @@
 import {chessboard} from 'vue-chessboard'
 import Editor from './Editor'
 import Chess from 'chess.js'
+import EngineSelector from './EngineSelector'
 
 export default {
   name: 'BoardEditor',
   components: {
     chessboard: chessboard,
-    editor: Editor
+    editor: Editor,
+    engineSelector: EngineSelector,
+    userPlayWhite: true
   },
   data () {
     return {
