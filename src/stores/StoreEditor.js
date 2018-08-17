@@ -11,6 +11,20 @@ export default new Vuex.Store({
   mutations: {
     increment (state) {
       state.count++
+    },
+    setChessMoves (state, moves) {
+      state.chessMoves = moves
+    },
+    setGame (state, chess) {
+      state.chess = chess
+    }
+  },
+  getters: {
+    getChessMoves (state) {
+      return state.chessMoves
+    },
+    getGame (state) {
+      return state.chess
     }
   }
 })

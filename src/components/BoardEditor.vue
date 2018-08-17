@@ -1,15 +1,14 @@
 <template>
   <div>
     <div id="board" class="floatbox">
-      <chessboard @onMove="onMove"></chessboard>
+      <chessboard :fen="currentfen" @onMove="onMove"></chessboard>
     </div>
     <div id="editor" class="floatbox">
-      <editor></editor>
+      <editor :action="(data)=>updateInput (data)"></editor>
       <input type="button" value="Run" @click="run">
     </div>
     <div>
-      <tree-view :data="chess"></tree-view>
-      <tree-view :data="chessMoves"></tree-view>
+      <tree-view :data="formatedChessMoves"></tree-view>
     </div>
   </div>
 </template>
@@ -18,7 +17,6 @@
 import {chessboard} from 'vue-chessboard'
 import Editor from './Editor'
 import Chess from 'chess.js'
-import store from '@/stores/StoreEditor'
 
 export default {
   name: 'BoardEditor',
@@ -26,33 +24,37 @@ export default {
     chessboard: chessboard,
     editor: Editor
   },
-  data: function () {
+  data () {
     return {
-      chess: store.chess,
-      chessMoves: store.chessMoves
+      editorInput: 'moves[Math.floor(Math.random()*moves.length)]',
+      currentfen: ''
     }
   },
   mounted: function () {
     console.log(this.$store)
   },
   methods: {
-    run: () => {
+    run () {
       // eslint-disable-next-line no-new-func
-      let f = Function('moves', 'Chess', store.input)
-      f(store.chessData, Chess)
+      let f = Function('moves', 'Chess', this.editorInput)
+      let game = this.$store.getters.getGame
+      console.log(f(this.$store.getters.getChessMoves))
+      game.move(f(this.$store.getters.getChessMoves))
+      this.currentfen = game.fen()
     },
-    onMove: (data) => {
+    onMove (data) {
       let chess = Chess(data.fen)
-      store.chess = chess
-      store.chessData = chess.moves()
+      console.log(chess.moves())
+      this.$store.commit('setGame', chess)
+      this.$store.commit('setChessMoves', chess.moves())
+    },
+    updateInput (input) {
+      this.editorInput = input
     }
   },
   computed: {
-    formatedChess () {
-      return JSON.parse(JSON.stringify(this.chess))
-    },
     formatedChessMoves () {
-      return JSON.parse(JSON.stringify(this.chessMoves))
+      return this.$store.getters.getChessMoves
     }
   }
 }

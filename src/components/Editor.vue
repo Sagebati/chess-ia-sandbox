@@ -13,6 +13,11 @@ import 'codemirror/addon/hint/anyword-hint'
 import store from '@/stores/StoreEditor'
 
 export default {
+  props: {
+    action: {
+      type: Function
+    }
+  },
   data () {
     return {
       code: store.input,
@@ -35,8 +40,8 @@ export default {
     codemirror
   },
   methods: {
-    input: (data) => {
-      store.input = data
+    input (data) {
+      this.action(data)
     },
     onCmReady (cm) {
       cm.on('keypress', () => {
