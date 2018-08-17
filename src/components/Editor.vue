@@ -1,37 +1,21 @@
 <template>
-  <codemirror v-model="code" :options="options"></codemirror>
+  <codemirror v-model="code" :options="options" @input="input" @ready="onCmReady"></codemirror>
 </template>
 
 <script>
 import {codemirror} from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/addon/hint/show-hint'
+import 'codemirror/addon/hint/show-hint.css'
+import 'codemirror/addon/hint/javascript-hint'
+import 'codemirror/addon/hint/anyword-hint'
+import store from '@/stores/StoreEditor'
 
 export default {
   data () {
     return {
-      code:
-          `import someResource from 'codemirror/some-resource'
-export default {
-  data () {
-    // 这是一个包含、代码提示、折叠、选中、sublime模式...的编辑器
-    // 按下Ctrl键可以体验代码提示
-    // 可以尝试sublime下的快捷键操作
-    return {
-      exampleCode: 'const a = 10',
-      cmOption: {
-        tabSize: 4,
-        styleActiveLine: true,
-        lineNumbers: true,
-        line: true,
-        mode: 'text/javascript',
-        lineWrapping: true,
-        theme: 'default'
-      }
-    }
-  },
-  components: examples
-}`,
+      code: store.input,
       options: {
         tabSize: 4,
         styleActiveLine: false,
@@ -40,13 +24,25 @@ export default {
         line: true,
         foldGutter: true,
         matchBrackets: true,
-        mode: 'text/javascript'
-
+        mode: 'text/javascript',
+        extraKeys: {
+          Ctrl: 'autocomplete'
+        }
       }
     }
   },
   components: {
     codemirror
+  },
+  methods: {
+    input: (data) => {
+      store.input = data
+    },
+    onCmReady (cm) {
+      cm.on('keypress', () => {
+        cm.showHint()
+      })
+    }
   }
 }
 </script>
