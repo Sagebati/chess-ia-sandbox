@@ -11,7 +11,7 @@
       <engineSelector></engineSelector>
     </div>
     <div id="board">
-      <chessboard :fen="currentfen" @onMove="onMove"></chessboard>
+      <chessboard :fen="currentFen" @onMove="onMove"></chessboard>
     </div>
     <div id="editor">
       <editor id="mainEditor" :action="(data)=>updateInput (data)"></editor>
@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       editorInput: 'moves[Math.floor(Math.random()*moves.length)]',
-      currentfen: ''
+      currentFen: ''
     }
   },
   methods: {
@@ -54,7 +54,16 @@ export default {
       let legalMoves = this.$store.getters.getChessMoves
       console.log(userFunction(legalMoves, game))
       game.move(userFunction(this.$store.getters.getChessMoves, game))
-      this.currentfen = game.fen()
+      this.currentFen = game.fen()
+      const stockfish = new Worker(require('@/engines/stockfish.js'))
+      stockfish.onmessage = function (message) {
+        console.log(message.data)
+      }
+      stockfish.postMessage('uci')
+      stockfish.postMessage('isready')
+      console.log('position ' + this.currentFen)
+      stockfish.postMessage('position fen ' + this.currentFen)
+      stockfish.postMessage('go depth 3')
     },
     onMove (data) {
       const chess = Chess(data.fen)
